@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -33,6 +35,16 @@ public class CategoriaControler {
     @PutMapping("/categoria/{id}")
     public CategoriaDTOResponse updateCategoria(@PathVariable int id, @Valid @RequestBody CategoriaDTO dto) {
         return categoriaService.updateCategoria(id, dto);
+    }
+
+    @DeleteMapping("/categoria/{id}")
+    public void deleteCategoria(@PathVariable int id) {
+        categoriaService.deleteCategoria(id);
+    }
+
+    @GetMapping("/categoria/{id}")
+    public CategoriaDTOResponse getCategoriaById(@PathVariable int id) {
+        return categoriaService.findCategoriaById(id);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

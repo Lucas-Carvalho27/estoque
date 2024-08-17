@@ -16,12 +16,14 @@ public class CategoriaService {
         this.categoriaRepository = categoriaRepository;
     }
 
+    // Create
     public CategoriaDTOResponse saveCategoria(CategoriaDTO dto) {
         var categoria = categoriaMapperService.toCategoria(dto);
         var savedCategoria = categoriaRepository.save(categoria);
         return categoriaMapperService.toCategoriaDTOResponse(savedCategoria);
     }
 
+    // Update by ID
     public CategoriaDTOResponse updateCategoria(int id, CategoriaDTO dto) {
         var categoria = categoriaMapperService.toCategoria(dto);
         categoria.setId(id);
@@ -34,6 +36,21 @@ public class CategoriaService {
 
         var categoriaAtualizada = categoriaRepository.save(categoriaExistente);
         return categoriaMapperService.toCategoriaDTOResponse(categoriaAtualizada);
+    }
+
+    // Delete ID
+    public void deleteCategoria(int id) {
+        if (!categoriaRepository.existsById(id)) {
+            throw new EntityNotFoundException("Categoria não encontrada");
+        }
+        categoriaRepository.deleteById(id);
+    }
+
+    // Read using ID
+    public CategoriaDTOResponse findCategoriaById(int id) {
+        var categoria = categoriaRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada"));
+        return categoriaMapperService.toCategoriaDTOResponse(categoria);
     }
 
 }
