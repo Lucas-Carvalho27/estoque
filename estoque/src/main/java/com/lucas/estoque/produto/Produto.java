@@ -5,6 +5,7 @@ import java.util.Set;
 import com.lucas.estoque.categoriaproduto.CategoriaProduto;
 import com.lucas.estoque.lojaproduto.LojaProduto;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,10 +29,10 @@ public class Produto {
     @Column(name = "produto_nome")
     private String produtoNome;
 
-    @OneToMany(mappedBy = "produto")
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.REMOVE)
     private Set<LojaProduto> lojaProdutos;
 
-    @OneToMany(mappedBy = "produto")
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.REMOVE)
     private Set<CategoriaProduto> categoriaProdutos;
 
     public Produto() {

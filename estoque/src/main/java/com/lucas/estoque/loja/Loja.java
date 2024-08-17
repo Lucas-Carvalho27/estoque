@@ -4,6 +4,7 @@ import java.util.Set;
 
 import com.lucas.estoque.lojaproduto.LojaProduto;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,7 +27,7 @@ public class Loja {
     private int lojaNumero;
     private String lojaRua;
 
-    @OneToMany(mappedBy = "loja")
+    @OneToMany(mappedBy = "loja", cascade = CascadeType.REMOVE)
     private Set<LojaProduto> lojaProdutos;
 
     public Loja() {
