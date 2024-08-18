@@ -34,8 +34,6 @@ public class LojaService {
         lojaExistente.setLojaEstado(loja.getLojaEstado());
         lojaExistente.setLojaNumero(loja.getLojaNumero());
 
-        // Atualize outros campos conforme necessário
-
         var lojaAtualizada = lojaRepository.save(lojaExistente);
         return lojaMappperService.toLojaDTORespose(lojaAtualizada);
     }

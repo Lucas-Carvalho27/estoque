@@ -32,7 +32,6 @@ public class CategoriaService {
 
         // Atualize os campos da categoria existente com os valores do DTO
         categoriaExistente.setCategoriaNome(categoria.getCategoriaNome());
-        // Atualize outros campos conforme necessário
 
         var categoriaAtualizada = categoriaRepository.save(categoriaExistente);
         return categoriaMapperService.toCategoriaDTOResponse(categoriaAtualizada);

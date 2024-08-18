@@ -30,10 +30,10 @@ public class Produto {
     @Column(name = "produto_nome")
     private String produtoNome;
 
-    @OneToMany(mappedBy = "produto", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "produto", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.PERSIST)
     private Set<LojaProduto> lojaProdutos;
 
-    @OneToMany(mappedBy = "produto", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "produto", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.PERSIST)
     private Set<CategoriaProduto> categoriaProdutos;
 
     public Produto() {
