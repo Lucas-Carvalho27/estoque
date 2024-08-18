@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.lucas.estoque.loja.Loja;
 import com.lucas.estoque.loja.LojaRepository;
 import com.lucas.estoque.produto.Produto;
 import com.lucas.estoque.produto.ProdutoRepository;
@@ -29,6 +30,19 @@ public class LojaProdutoService {
         this.produtoRepository = produtoRepository;
     }
 
+    public void addVariasLojas(int produtoId) {
+        List<Loja> lojas = lojaRepository.findAll();
+        List<LojaProduto> lojaProdutos = new ArrayList<>();
+        int tamanho = lojas.size();
+        for (int i = 0; i < tamanho; i++) {
+            Loja loja = lojas.get(i);
+            LojaProdutoDTO dto = new LojaProdutoDTO(loja.getId(), produtoId, 0, 9999);
+            lojaProdutos.add(lojaProdutoMapperService.toLojaProduto(dto));
+        }
+        lojaProdutoRepository.saveAll(lojaProdutos);
+    }
+
+    /// referencia
     public void addVariosProdutos(int lojaId) {
         List<Produto> produtos = produtoRepository.findAll();
         List<LojaProduto> lojaProdutos = new ArrayList<>();
@@ -53,8 +67,19 @@ public class LojaProdutoService {
         listaLojaProduto.forEach(lojaProduto -> deleteProdutoLoja(lojaProduto.getLoja_produto_id()));
     }
 
+    public void deleteLojaByProdutoId(int produtoId) {
+        var listaLojaProduto = lojaProdutoRepository.findByProdutoId(produtoId);
+        listaLojaProduto.forEach(lojaProduto -> deleteProdutoLoja(lojaProduto.getLoja_produto_id()));
+    }
+
     public List<LojaProdutoDTOResponse> getProdutosByLojaId(int lojaId) {
         var listaLojaProduto = lojaProdutoRepository.findByLojaId(lojaId);
+        return listaLojaProduto.stream().map(lojaProdutoMapperService::toLojaProdutoDTOResponse)
+                .collect(Collectors.toList());
+    }
+
+    public List<LojaProdutoDTOResponse> getLojasByProdutoId(int produtoId) {
+        var listaLojaProduto = lojaProdutoRepository.findByProdutoId(produtoId);
         return listaLojaProduto.stream().map(lojaProdutoMapperService::toLojaProdutoDTOResponse)
                 .collect(Collectors.toList());
     }

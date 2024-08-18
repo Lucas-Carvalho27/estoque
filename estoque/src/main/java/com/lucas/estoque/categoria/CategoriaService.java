@@ -2,6 +2,9 @@ package com.lucas.estoque.categoria;
 
 import org.springframework.stereotype.Service;
 
+import com.lucas.estoque.categoriaproduto.CategoriaProdutoRepository;
+import com.lucas.estoque.categoriaproduto.CategoriaProdutoService;
+
 import jakarta.persistence.EntityNotFoundException;
 import lombok.var;
 
@@ -10,10 +13,13 @@ public class CategoriaService {
 
     final private CategoriaMapperService categoriaMapperService;
     final private CategoriaRepository categoriaRepository;
+    final private CategoriaProdutoService CategoriaProdutoService;
 
-    public CategoriaService(CategoriaMapperService categoriaMapperService, CategoriaRepository categoriaRepository) {
+    public CategoriaService(CategoriaMapperService categoriaMapperService, CategoriaRepository categoriaRepository,
+            com.lucas.estoque.categoriaproduto.CategoriaProdutoService categoriaProdutoService) {
         this.categoriaMapperService = categoriaMapperService;
         this.categoriaRepository = categoriaRepository;
+        CategoriaProdutoService = categoriaProdutoService;
     }
 
     // Create
@@ -42,6 +48,7 @@ public class CategoriaService {
         if (!categoriaRepository.existsById(id)) {
             throw new EntityNotFoundException("Categoria não encontrada");
         }
+        CategoriaProdutoService.deleteProdutoByCategoriaId(id);
         categoriaRepository.deleteById(id);
     }
 
