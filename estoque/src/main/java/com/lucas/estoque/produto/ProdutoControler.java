@@ -3,6 +3,8 @@ package com.lucas.estoque.produto;
 import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,6 +42,11 @@ public class ProdutoControler {
     @GetMapping("/produto/{id}")
     public ProdutoDTOResponse findProdutoById(@PathVariable int id) {
         return produtoService.findProdutoById(id);
+    }
+
+    @GetMapping("/produto/all")
+    public List<Produto> getAllProdutos() {
+        return produtoService.getAllProdutos();
     }
 
 }

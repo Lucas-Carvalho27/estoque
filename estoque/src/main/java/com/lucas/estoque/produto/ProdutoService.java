@@ -1,5 +1,7 @@
 package com.lucas.estoque.produto;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import jakarta.persistence.EntityNotFoundException;
 
@@ -51,4 +53,7 @@ public class ProdutoService {
         return produtoMapperService.toProdutoDTOResponse(produto);
     }
 
+    public List<Produto> getAllProdutos() {
+        return produtoRepository.findAll();
+    }
 }

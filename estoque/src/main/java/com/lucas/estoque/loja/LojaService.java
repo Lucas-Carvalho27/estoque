@@ -2,6 +2,9 @@ package com.lucas.estoque.loja;
 
 import org.springframework.stereotype.Service;
 
+import com.lucas.estoque.lojaproduto.LojaProdutoMapperService;
+import com.lucas.estoque.lojaproduto.LojaProdutoService;
+
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
@@ -9,15 +12,19 @@ public class LojaService {
 
     private final LojaRepository lojaRepository;
     private final LojaMapperService lojaMappperService;
+    private final LojaProdutoService lojaProdutoService;
 
-    public LojaService(LojaRepository lojaRepository, LojaMapperService lojaMappperService) {
+    public LojaService(LojaRepository lojaRepository, LojaMapperService lojaMappperService,
+            LojaProdutoService lojaProdutoService) {
         this.lojaRepository = lojaRepository;
         this.lojaMappperService = lojaMappperService;
+        this.lojaProdutoService = lojaProdutoService;
     }
 
     public LojaDTORespose saveLoja(LojaDTO dto) {
         var loja = lojaMappperService.toLoja(dto);
         var savedLoja = lojaRepository.save(loja);
+        lojaProdutoService.addVariosProdutos(loja.getId());
         return lojaMappperService.toLojaDTORespose(savedLoja);
     }
 
@@ -43,6 +50,7 @@ public class LojaService {
         if (!lojaRepository.existsById(id)) {
             throw new EntityNotFoundException("Loja não encontrada");
         }
+        lojaProdutoService.deleteProdutosByLojaId(id);
         lojaRepository.deleteById(id);
     }
 
