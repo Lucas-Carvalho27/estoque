@@ -10,8 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
@@ -25,6 +29,24 @@ public class LojaControler {
     @PostMapping("loja")
     public LojaDTORespose saveLoja(@Valid @RequestBody LojaDTO dto) {
         return lojaService.saveLoja(dto);
+    }
+
+    // update
+    @PutMapping("/loja/{id}")
+    public LojaDTORespose updateLoja(@PathVariable int id, @Valid @RequestBody LojaDTO dto) {
+        return lojaService.updateLoja(id, dto);
+    }
+
+    // delete
+    @DeleteMapping("/loja/{id}")
+    public void deleteLoja(@PathVariable int id) {
+        lojaService.deleteLoja(id);
+    }
+
+    // read
+    @GetMapping("/loja/{id}")
+    public LojaDTORespose findLojaById(@PathVariable int id) {
+        return lojaService.findLojaById(id);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

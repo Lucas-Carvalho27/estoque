@@ -32,16 +32,19 @@ public class CategoriaControler {
         return categoriaService.saveCategoria(dto);
     }
 
+    // update
     @PutMapping("/categoria/{id}")
     public CategoriaDTOResponse updateCategoria(@PathVariable int id, @Valid @RequestBody CategoriaDTO dto) {
         return categoriaService.updateCategoria(id, dto);
     }
 
+    // delete
     @DeleteMapping("/categoria/{id}")
     public void deleteCategoria(@PathVariable int id) {
         categoriaService.deleteCategoria(id);
     }
 
+    // read
     @GetMapping("/categoria/{id}")
     public CategoriaDTOResponse getCategoriaById(@PathVariable int id) {
         return categoriaService.findCategoriaById(id);
