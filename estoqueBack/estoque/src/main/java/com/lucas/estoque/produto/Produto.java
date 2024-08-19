@@ -39,11 +39,11 @@ public class Produto {
     public Produto() {
     }
 
-    public int getProdutoId() {
+    public int getId() {
         return id;
     }
 
-    public void setProdutoId(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 

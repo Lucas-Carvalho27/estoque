@@ -15,7 +15,7 @@ public class ProdutoMapperService {
 
     public ProdutoDTOResponse toProdutoDTOResponse(Produto produto) {
 
-        return new ProdutoDTOResponse(produto.getProdutoInfo(), produto.getProdutoNome());
+        return new ProdutoDTOResponse(produto.getId(),produto.getProdutoInfo(), produto.getProdutoNome());
     }
 
 }

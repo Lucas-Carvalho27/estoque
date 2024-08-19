@@ -1,6 +1,7 @@
 package com.lucas.estoque.produto;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -61,7 +62,10 @@ public class ProdutoService {
         return produtoMapperService.toProdutoDTOResponse(produto);
     }
 
-    public List<Produto> getAllProdutos() {
-        return produtoRepository.findAll();
+    public List<ProdutoDTOResponse>  getAllProdutos() {
+        List<Produto> produtos = produtoRepository.findAll();
+        return produtos.stream()
+                       .map(produtoMapperService::toProdutoDTOResponse)
+                       .collect(Collectors.toList());
     }
 }

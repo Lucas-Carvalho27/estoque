@@ -19,7 +19,7 @@ public class LojaProdutoMapperService {
         lojaproduto.setLoja(loja);
 
         var produto = new Produto();
-        produto.setProdutoId(lojaProdutoDTO.produtoId());
+        produto.setId(lojaProdutoDTO.produtoId());
         lojaproduto.setProduto(produto);
 
         return lojaproduto;

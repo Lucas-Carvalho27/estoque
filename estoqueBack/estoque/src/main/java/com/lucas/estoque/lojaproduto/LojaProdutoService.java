@@ -49,7 +49,7 @@ public class LojaProdutoService {
         int tamanho = produtos.size();
         for (int i = 0; i < tamanho; i++) {
             Produto produto = produtos.get(i);
-            LojaProdutoDTO dto = new LojaProdutoDTO(lojaId, produto.getProdutoId(), 0, 9999);
+            LojaProdutoDTO dto = new LojaProdutoDTO(lojaId, produto.getId(), 0, 9999);
             lojaProdutos.add(lojaProdutoMapperService.toLojaProduto(dto));
         }
         lojaProdutoRepository.saveAll(lojaProdutos);
