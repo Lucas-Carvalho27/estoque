@@ -8,7 +8,6 @@ export default function Home() {
   const [selectedProduto, setSelectedProduto] = useState(null);
   const [produtoNome, setProdutoNome] = useState("");
   const [produtoInfo, setProdutoInfo] = useState("");
-  const [produtoTags, setProdutoTags] = useState("");
 
   useEffect(() => {
     loadProdutos();
@@ -21,9 +20,8 @@ export default function Home() {
 
   const handleShow = (produto) => {
     setSelectedProduto(produto);
-    setProdutoNome(produto.produtoNome);
-    setProdutoInfo(produto.produtoInfo);
-    setProdutoTags(""); // Inicia as tags como vazio, pois está vazio no código atual
+    setProdutoNome(produto.ProdutoNome);
+    setProdutoInfo(produto.ProdutoInfo);
     setShow(true);
   };
 
@@ -31,20 +29,31 @@ export default function Home() {
 
   const handleSaveChanges = async () => {
     const updatedProduto = {
-      ...selectedProduto,
-      produtoNome,
-      produtoInfo,
-      produtoTags, // Adiciona as tags aqui
+      id: selectedProduto.id,
+      ProdutoNome: produtoNome,
+      ProdutoInfo: produtoInfo,
     };
 
-    // Aqui você faria a requisição PUT para salvar as alterações no banco de dados.
-    await axios.put(
-      `http://localhost:8080/produto/${selectedProduto.id}`,
-      updatedProduto
-    );
+    try {
+      await axios.put(
+        `http://localhost:8080/produto/${selectedProduto.id}`,
+        updatedProduto
+      );
+      setShow(false);
+      loadProdutos(); // Recarrega a lista de produtos após salvar as alterações
+    } catch (error) {
+      console.error("Erro ao atualizar o produto:", error.response?.data || error.message);
+    }
+  };
 
-    setShow(false);
-    loadProdutos(); // Recarrega a lista de produtos após salvar as alterações
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`http://localhost:8080/produto/${selectedProduto.id}`);
+      setShow(false);
+      loadProdutos(); // Recarrega a lista de produtos após a exclusão
+    } catch (error) {
+      console.error("Erro ao excluir o produto:", error.response?.data || error.message);
+    }
   };
 
   return (
@@ -56,7 +65,6 @@ export default function Home() {
               <th scope="col">#</th>
               <th scope="col">Nome</th>
               <th scope="col">Info</th>
-              <th scope="col">Tags</th>
               <th scope="col">Ações</th>
             </tr>
           </thead>
@@ -64,9 +72,8 @@ export default function Home() {
             {produtos.map((produto, index) => (
               <tr key={index}>
                 <th scope="row">{index + 1}</th>
-                <td>{produto.produtoNome}</td>
-                <td>{produto.produtoInfo}</td>
-                <td>{produto.produtoTags || ""}</td> {/* Coluna para Tags */}
+                <td>{produto.ProdutoNome}</td>
+                <td>{produto.ProdutoInfo}</td>
                 <td>
                   <button
                     className="btn btn-outline-primary"
@@ -103,14 +110,6 @@ export default function Home() {
                 onChange={(e) => setProdutoInfo(e.target.value)}
               />
             </Form.Group>
-            <Form.Group controlId="formProdutoTags" className="mt-3">
-              <Form.Label>Tags do Produto</Form.Label>
-              <Form.Control
-                type="text"
-                value={produtoTags}
-                onChange={(e) => setProdutoTags(e.target.value)}
-              />
-            </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
@@ -119,6 +118,9 @@ export default function Home() {
           </Button>
           <Button variant="primary" onClick={handleSaveChanges}>
             Salvar alterações
+          </Button>
+          <Button variant="danger" onClick={handleDelete}>
+            Excluir
           </Button>
         </Modal.Footer>
       </Modal>
