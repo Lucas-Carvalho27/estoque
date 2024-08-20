@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.lucas.estoque.categoriaproduto.CategoriaProdutoService;
 import com.lucas.estoque.lojaproduto.LojaProdutoService;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -15,12 +16,16 @@ public class ProdutoService {
     private final ProdutoRepository produtoRepository;
     private final ProdutoMapperService produtoMapperService;
     private final LojaProdutoService lojaProdutoService;
+    private final CategoriaProdutoService categoriaProdutoService;
+
+
 
     public ProdutoService(ProdutoRepository produtoRepository, ProdutoMapperService produtoMapperService,
-            LojaProdutoService lojaProdutoService) {
+            LojaProdutoService lojaProdutoService, CategoriaProdutoService categoriaProdutoService) {
         this.produtoRepository = produtoRepository;
         this.produtoMapperService = produtoMapperService;
         this.lojaProdutoService = lojaProdutoService;
+        this.categoriaProdutoService = categoriaProdutoService;
     }
 
     public ProdutoDTOResponse saveProduto(ProdutoDTO dto) {
@@ -66,6 +71,8 @@ public class ProdutoService {
         List<Produto> produtos = produtoRepository.findAll();
         return produtos.stream()
                        .map(produtoMapperService::toProdutoDTOResponse)
-                       .collect(Collectors.toList());
+                       .collect(Collectors.toList());               
     }
+
+
 }
